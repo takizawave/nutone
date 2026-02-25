@@ -2,7 +2,6 @@ import { Header } from "../components/Header";
 import { HeroSection } from "../components/HeroSection";
 import { PromiseSection } from "../components/PromiseSection";
 import { ServicesSection } from "../components/ServicesSection";
-import { FeaturesSection } from "../components/FeaturesSection";
 import { PortfolioSection } from "../components/PortfolioSection";
 import { CompanySection } from "../components/CompanySection";
 import { NewsTicker } from "../components/NewsTicker";
@@ -16,7 +15,6 @@ export function HomePage() {
       <HeroSection />
       <PromiseSection />
       <ServicesSection />
-      <FeaturesSection />
       <PortfolioSection />
       <CompanySection />
       <NewsTicker />

@@ -7,19 +7,19 @@ import { NoiseOverlay, RevealLine, SectionWaveTop, WaveformBg } from "./Industri
 const services = [
   {
     number: "01",
-    titleEn: "Music Production",
-    titleJa: "楽曲制作",
+    titleEn: "Sound Production",
+    titleJa: "音楽制作・サウンドデザイン事業",
+    subheading: "記憶に刻まれる音づくり",
     description:
-      "年間100曲以上の楽曲を納品。300人以上のアーティストと協業しており、どんなジャンルでも対応いたします。メジャー楽曲から上場企業の広告ソングまで幅広く制作実績がございます。",
-    meta: "48 kHz  ·  24 bit  ·  Stereo",
+      "過去のデータの再生産や、無難な「商品としての音」に留まらない、唯一無二のサウンドを設計します。",
   },
   {
     number: "02",
-    titleEn: "Video Production",
-    titleJa: "映像制作",
+    titleEn: "Artist & IP Development",
+    titleJa: "レーベル・IP事業",
+    subheading: "「どこかで聞いた音」を超えて、まだ見ぬ文化を切り拓く",
     description:
-      "企画にこだわり抜いた妥協０のクリエイティブを提供します。撮影から編集まで一気通貫で行います。実写からアニメーション、CGなど幅広く制作実績がございます。",
-    meta: "3840 × 2160  ·  29.97 fps  ·  HDR",
+      "自社IP（アーティスト・プロジェクト）を通じて、純粋な創造性が正当な経済価値を生む「新しい文化の基準」を確立します。",
   },
 ];
 
@@ -109,17 +109,11 @@ export function ServicesSection() {
                     <p className="text-[var(--text-secondary)] mt-2" style={{ fontSize: "0.8125rem", letterSpacing: "0.06em" }}>
                       {service.titleJa}
                     </p>
-                    <p
-                      className="text-[var(--text-secondary)] mt-3 hidden md:block"
-                      style={{
-                        fontFamily: "var(--font-mono)",
-                        fontSize: "0.4375rem",
-                        letterSpacing: "0.08em",
-                        fontWeight: 300,
-                      }}
-                    >
-                      {service.meta}
-                    </p>
+                    {service.subheading && (
+                      <p className="text-[var(--text-primary)] mt-3" style={{ fontSize: "0.875rem", letterSpacing: "0.04em", fontWeight: 500 }}>
+                        {service.subheading}
+                      </p>
+                    )}
                   </div>
                 </div>
 
