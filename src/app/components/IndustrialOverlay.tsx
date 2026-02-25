@@ -103,6 +103,99 @@ export function NoiseOverlay({ opacity = 0.03 }: { opacity?: number }) {
   );
 }
 
+/* ── TV static / no-signal grain (昔のテレビの繋がらない時) — coarser, visible ── */
+export function TVStaticOverlay({ opacity = 0.07 }: { opacity?: number }) {
+  return (
+    <div
+      className="absolute inset-0 pointer-events-none"
+      style={{
+        zIndex: 1,
+        opacity,
+        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='tv'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='3' stitchTiles='stitch' result='n'/%3E%3CfeColorMatrix type='saturate' values='0' in='n'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23tv)'/%3E%3C/svg%3E")`,
+        backgroundSize: "200px 200px",
+        mixBlendMode: "overlay",
+      }}
+      aria-hidden
+    />
+  );
+}
+
+/* ── Company-style: intertwined wave fan (sound/oscilloscope feel) ── */
+export function SoundWaveFanBg({ className = "" }: { className?: string }) {
+  const w = 1200;
+  const h = 400;
+  const lines = 12;
+  const paths = Array.from({ length: lines }, (_, i) => {
+    const step = 80;
+    const points = Array.from({ length: 120 }, (__, j) => {
+      const t = j / 119;
+      const x = t * w;
+      const centerNorm = Math.sin(t * Math.PI);
+      const amp = 35 * centerNorm + 4;
+      const freq = 0.018 + (i / lines) * 0.012;
+      const phase = (i / lines) * Math.PI * 2;
+      const y = h / 2 + amp * Math.sin(x * freq + phase);
+      return `${j === 0 ? "M" : "L"} ${x} ${y}`;
+    }).join(" ");
+    return points;
+  });
+  return (
+    <div
+      className={`absolute inset-0 pointer-events-none overflow-hidden ${className}`}
+      style={{ zIndex: 0 }}
+      aria-hidden
+    >
+      <svg className="w-full h-full" viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="xMidYMid slice">
+        {paths.map((d, i) => (
+          <path
+            key={i}
+            d={d}
+            fill="none"
+            stroke="var(--line-soft)"
+            strokeWidth="0.6"
+            opacity={0.08 + (i % 3) * 0.03}
+          />
+        ))}
+      </svg>
+    </div>
+  );
+}
+
+/* ── Company-style: dashed curve + vertical dashes (subtle geometric) ── */
+export function DashedCurveBg({ className = "" }: { className?: string }) {
+  return (
+    <div
+      className={`absolute inset-0 pointer-events-none overflow-hidden ${className}`}
+      style={{ zIndex: 0 }}
+      aria-hidden
+    >
+      <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
+        <path
+          d="M 0 8 Q 25 30 50 50 T 100 92"
+          fill="none"
+          stroke="var(--line-soft)"
+          strokeWidth="0.4"
+          strokeDasharray="2 1.5"
+          opacity={0.2}
+        />
+        {[18, 42, 68].map((x) => (
+          <line
+            key={x}
+            x1={x}
+            y1={5}
+            x2={x}
+            y2={20}
+            stroke="var(--line-soft)"
+            strokeWidth="0.35"
+            strokeDasharray="1 1"
+            opacity={0.15}
+          />
+        ))}
+      </svg>
+    </div>
+  );
+}
+
 /* ── Horizontal reveal line ── */
 export function RevealLine({
   delay = 0.1,

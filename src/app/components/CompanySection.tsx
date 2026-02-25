@@ -1,6 +1,15 @@
 import { motion } from "motion/react";
-import { NoiseOverlay, RevealLine, SectionWaveTop, WaveformBg } from "./IndustrialOverlay";
+import {
+  DashedCurveBg,
+  NoiseOverlay,
+  RevealLine,
+  SectionWaveTop,
+  SoundWaveFanBg,
+  TVStaticOverlay,
+  WaveformBg,
+} from "./IndustrialOverlay";
 import { NutoneLogoBackground } from "./NutoneLogoBackground";
+import { ThinLargeLogoBackground } from "./ThinLargeLogoBackground";
 
 const companyInfo = [
   { label: "会社名", value: "nutone株式会社" },
@@ -13,11 +22,15 @@ const companyInfo = [
 
 export function CompanySection() {
   return (
-    <section id="company" className="bg-[var(--surface)] relative overflow-hidden" style={{ padding: "120px 0", borderTop: "var(--section-divider)" }}>
+    <section id="company" className="bg-[var(--surface)] relative overflow-hidden py-16 md:py-[7.5rem]" style={{ borderTop: "var(--section-divider)" }}>
       <NutoneLogoBackground />
+      <ThinLargeLogoBackground />
       <SectionWaveTop />
       <WaveformBg />
+      <SoundWaveFanBg />
+      <DashedCurveBg />
       <NoiseOverlay />
+      <TVStaticOverlay opacity={0.05} />
 
       <div className="max-w-[1080px] mx-auto px-6 md:px-12 relative" style={{ zIndex: 5 }}>
         <div className="flex flex-col md:flex-row gap-16 md:gap-24">

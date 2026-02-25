@@ -10,7 +10,7 @@ import { Footer } from "../components/Footer";
 
 export function HomePage() {
   return (
-    <div className="min-h-screen bg-[var(--void)] relative">
+    <div className="min-h-screen bg-[var(--void)] relative overflow-x-hidden">
       <Header />
       <HeroSection />
       <PromiseSection />

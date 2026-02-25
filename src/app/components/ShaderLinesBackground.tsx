@@ -1,6 +1,6 @@
 /**
  * Rhizomatiks-style hero background: spectrum bars, waveforms, grid,
- * glitch rects, particles, data readout. #020204 base.
+ * glitch rects, particles, data readout. #000000 base (hero: pure black).
  */
 import { useEffect, useRef } from "react";
 
@@ -164,7 +164,7 @@ export function ShaderLinesBackground({ reducedMotion = false }: ShaderLinesBack
       const sx = gw / w;
       const gMid = gh * 0.5;
 
-      ctxA.fillStyle = "#020204";
+      ctxA.fillStyle = "#000000";
       ctxA.fillRect(0, 0, gw, gh);
 
       for (let i = 0; i < barCount; i += 3) {
@@ -179,15 +179,18 @@ export function ShaderLinesBackground({ reducedMotion = false }: ShaderLinesBack
         if (barH < 1) continue;
         const bx = barX[i] * sx;
         const bw = Math.max(1, barW[i] * sx * 2);
-        const alpha = Math.min(1, amp * 3);
-        ctxA.fillStyle = `rgba(220,225,240,${alpha * 0.7})`;
+        const alpha = Math.min(1, amp * 2.2);
+        const glowR = Math.floor(160 + (1 - freq) * 60);
+        const glowG = Math.floor(175 + freq * 50);
+        const glowB = Math.floor(200 + freq * 55);
+        ctxA.fillStyle = `rgba(${glowR},${glowG},${glowB},${alpha * 0.4})`;
         ctxA.fillRect(bx, gMid - barH, bw, barH * 2);
       }
 
-      ctx.fillStyle = "#020204";
+      ctx.fillStyle = "#000000";
       ctx.fillRect(0, 0, w, h);
 
-      ctx.strokeStyle = "rgba(255,255,255,0.018)";
+      ctx.strokeStyle = "rgba(180,195,220,0.012)";
       ctx.lineWidth = 0.5;
       const gridSize = 60;
       for (let gx = 0; gx < w; gx += gridSize) {
@@ -203,11 +206,11 @@ export function ShaderLinesBackground({ reducedMotion = false }: ShaderLinesBack
         ctx.stroke();
       }
 
-      ctx.globalAlpha = 0.5;
+      ctx.globalAlpha = 0.38;
       ctx.filter = "blur(16px)";
       ctx.drawImage(offA, 0, 0, w, h);
       ctx.filter = "blur(45px)";
-      ctx.globalAlpha = 0.3;
+      ctx.globalAlpha = 0.22;
       ctx.drawImage(offA, 0, 0, w, h);
       ctx.filter = "none";
       ctx.globalAlpha = 1;
@@ -233,10 +236,13 @@ export function ShaderLinesBackground({ reducedMotion = false }: ShaderLinesBack
         const barH = amp * h;
         if (barH < 0.5) continue;
         const bw = barW[i] * (0.6 + n * 0.5);
-        const alpha = Math.min(1, amp * 2.5);
-        const r = Math.floor(200 + (1 - freq) * 55);
-        const g = Math.floor(205 + freq * 30);
-        const b = Math.floor(210 + freq * 45);
+        const alpha = Math.min(1, amp * 1.6);
+        const r = Math.floor(165 + (1 - freq) * 75);
+        const g = Math.floor(180 + freq * 45);
+        const b = Math.floor(195 + freq * 60);
+        const rPeak = Math.min(255, r + 35);
+        const gPeak = Math.min(255, g + 30);
+        const bPeak = Math.min(255, b + 40);
         const grad = ctx.createLinearGradient(
           0,
           midY - barH,
@@ -244,11 +250,11 @@ export function ShaderLinesBackground({ reducedMotion = false }: ShaderLinesBack
           midY + barH
         );
         grad.addColorStop(0, `rgba(${r},${g},${b},0)`);
-        grad.addColorStop(0.15, `rgba(${r},${g},${b},${alpha * 0.15})`);
-        grad.addColorStop(0.4, `rgba(${r},${g},${b},${alpha * 0.7})`);
-        grad.addColorStop(0.5, `rgba(255,255,255,${alpha})`);
-        grad.addColorStop(0.6, `rgba(${r},${g},${b},${alpha * 0.7})`);
-        grad.addColorStop(0.85, `rgba(${r},${g},${b},${alpha * 0.15})`);
+        grad.addColorStop(0.15, `rgba(${r},${g},${b},${alpha * 0.12})`);
+        grad.addColorStop(0.4, `rgba(${r},${g},${b},${alpha * 0.5})`);
+        grad.addColorStop(0.5, `rgba(${rPeak},${gPeak},${bPeak},${alpha * 0.65})`);
+        grad.addColorStop(0.6, `rgba(${r},${g},${b},${alpha * 0.5})`);
+        grad.addColorStop(0.85, `rgba(${r},${g},${b},${alpha * 0.12})`);
         grad.addColorStop(1, `rgba(${r},${g},${b},0)`);
         ctx.fillStyle = grad;
         ctx.fillRect(barX[i], midY - barH, bw, barH * 2);
@@ -260,32 +266,36 @@ export function ShaderLinesBackground({ reducedMotion = false }: ShaderLinesBack
           amp: 0.1,
           speed: 0.7,
           lw: 1.2,
-          alpha: 0.25,
+          alpha: 0.18,
           harmonics: 4,
+          color: "180,200,230",
         },
         {
           freq: 0.015,
           amp: 0.04,
           speed: 1.8,
           lw: 0.7,
-          alpha: 0.15,
+          alpha: 0.1,
           harmonics: 3,
+          color: "200,215,245",
         },
         {
           freq: 0.003,
           amp: 0.18,
           speed: 0.25,
           lw: 2,
-          alpha: 0.08,
+          alpha: 0.06,
           harmonics: 5,
+          color: "160,190,220",
         },
         {
           freq: 0.025,
           amp: 0.015,
           speed: 3.5,
           lw: 0.5,
-          alpha: 0.2,
+          alpha: 0.12,
           harmonics: 2,
+          color: "210,220,250",
         },
       ];
 
@@ -293,7 +303,7 @@ export function ShaderLinesBackground({ reducedMotion = false }: ShaderLinesBack
         const pulseAmp =
           wf.amp * (1 + beat * 0.6 + (reducedMotion ? 0 : kickFlash * 0.4));
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(255,255,255,${wf.alpha})`;
+        ctx.strokeStyle = `rgba(${wf.color},${wf.alpha})`;
         ctx.lineWidth = wf.lw;
         for (let px = 0; px <= w; px += 2) {
           let y = midY;
@@ -315,9 +325,9 @@ export function ShaderLinesBackground({ reducedMotion = false }: ShaderLinesBack
         ctx.stroke();
         ctx.save();
         ctx.filter = "blur(6px)";
-        ctx.globalAlpha = wf.alpha * 0.3;
+        ctx.globalAlpha = wf.alpha * 0.25;
         ctx.lineWidth = wf.lw * 5;
-        ctx.strokeStyle = `rgba(200,210,240,${wf.alpha * 0.2})`;
+        ctx.strokeStyle = `rgba(${wf.color},${wf.alpha * 0.15})`;
         ctx.beginPath();
         for (let px = 0; px <= w; px += 4) {
           let y = midY;
@@ -338,13 +348,13 @@ export function ShaderLinesBackground({ reducedMotion = false }: ShaderLinesBack
         ctx.restore();
       }
 
-      const lineAlpha = 0.06 + beat * 0.04 + kickFlash * 0.08;
+      const lineAlpha = 0.04 + beat * 0.025 + kickFlash * 0.04;
       const lineGrad = ctx.createLinearGradient(0, 0, w, 0);
-      lineGrad.addColorStop(0, `rgba(255,255,255,0)`);
-      lineGrad.addColorStop(0.1, `rgba(255,255,255,${lineAlpha * 0.5})`);
-      lineGrad.addColorStop(0.5, `rgba(255,255,255,${lineAlpha})`);
-      lineGrad.addColorStop(0.9, `rgba(255,255,255,${lineAlpha * 0.5})`);
-      lineGrad.addColorStop(1, `rgba(255,255,255,0)`);
+      lineGrad.addColorStop(0, `rgba(180,200,230,0)`);
+      lineGrad.addColorStop(0.1, `rgba(180,200,230,${lineAlpha * 0.5})`);
+      lineGrad.addColorStop(0.5, `rgba(190,210,240,${lineAlpha})`);
+      lineGrad.addColorStop(0.9, `rgba(180,200,230,${lineAlpha * 0.5})`);
+      lineGrad.addColorStop(1, `rgba(180,200,230,0)`);
       ctx.fillStyle = lineGrad;
       ctx.fillRect(0, midY - 0.3, w, 0.6);
 
@@ -356,9 +366,9 @@ export function ShaderLinesBackground({ reducedMotion = false }: ShaderLinesBack
           0,
           scanY + 30
         );
-        scanGrad.addColorStop(0, `rgba(255,255,255,0)`);
-        scanGrad.addColorStop(0.5, `rgba(255,255,255,0.03)`);
-        scanGrad.addColorStop(1, `rgba(255,255,255,0)`);
+        scanGrad.addColorStop(0, `rgba(170,195,230,0)`);
+        scanGrad.addColorStop(0.5, `rgba(170,195,230,0.018)`);
+        scanGrad.addColorStop(1, `rgba(170,195,230,0)`);
         ctx.fillStyle = scanGrad;
         ctx.fillRect(0, scanY - 30, w, 60);
       }
@@ -457,7 +467,7 @@ export function ShaderLinesBackground({ reducedMotion = false }: ShaderLinesBack
         ctx.fillRect(0, 0, w, h);
       }
 
-      const gp = 0.04 + Math.sin(t * 0.12) * 0.015 + beat * 0.02;
+      const gp = 0.028 + Math.sin(t * 0.12) * 0.01 + beat * 0.015;
       const g1 = ctx.createRadialGradient(
         w * 0.45,
         midY,
@@ -466,30 +476,30 @@ export function ShaderLinesBackground({ reducedMotion = false }: ShaderLinesBack
         midY,
         Math.min(w, h) * 0.6
       );
-      g1.addColorStop(0, `rgba(200,210,240,${gp})`);
-      g1.addColorStop(0.3, `rgba(180,185,200,${gp * 0.3})`);
+      g1.addColorStop(0, `rgba(140,175,220,${gp})`);
+      g1.addColorStop(0.3, `rgba(100,140,190,${gp * 0.35})`);
       g1.addColorStop(1, `rgba(0,0,0,0)`);
       ctx.fillStyle = g1;
       ctx.fillRect(0, 0, w, h);
 
       const edgeT = ctx.createLinearGradient(0, 0, 0, h * 0.25);
-      edgeT.addColorStop(0, `rgba(2,2,4,0.75)`);
-      edgeT.addColorStop(1, `rgba(2,2,4,0)`);
+      edgeT.addColorStop(0, `rgba(0,0,0,0.75)`);
+      edgeT.addColorStop(1, `rgba(0,0,0,0)`);
       ctx.fillStyle = edgeT;
       ctx.fillRect(0, 0, w, h * 0.25);
       const edgeB = ctx.createLinearGradient(0, h * 0.78, 0, h);
-      edgeB.addColorStop(0, `rgba(2,2,4,0)`);
-      edgeB.addColorStop(1, `rgba(2,2,4,0.8)`);
+      edgeB.addColorStop(0, `rgba(0,0,0,0)`);
+      edgeB.addColorStop(1, `rgba(0,0,0,0.8)`);
       ctx.fillStyle = edgeB;
       ctx.fillRect(0, h * 0.78, w, h * 0.22);
       const edgeL = ctx.createLinearGradient(0, 0, w * 0.12, 0);
-      edgeL.addColorStop(0, `rgba(2,2,4,0.6)`);
-      edgeL.addColorStop(1, `rgba(2,2,4,0)`);
+      edgeL.addColorStop(0, `rgba(0,0,0,0.6)`);
+      edgeL.addColorStop(1, `rgba(0,0,0,0)`);
       ctx.fillStyle = edgeL;
       ctx.fillRect(0, 0, w * 0.12, h);
       const edgeR = ctx.createLinearGradient(w * 0.88, 0, w, 0);
-      edgeR.addColorStop(0, `rgba(2,2,4,0)`);
-      edgeR.addColorStop(1, `rgba(2,2,4,0.6)`);
+      edgeR.addColorStop(0, `rgba(0,0,0,0)`);
+      edgeR.addColorStop(1, `rgba(0,0,0,0.6)`);
       ctx.fillStyle = edgeR;
       ctx.fillRect(w * 0.88, 0, w * 0.12, h);
       const vig = ctx.createRadialGradient(

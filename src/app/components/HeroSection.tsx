@@ -1,13 +1,11 @@
 import { useRef, useState, useEffect } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { motion, useScroll, useReducedMotion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { ShaderLinesBackground } from "./ShaderLinesBackground";
 import { NutoneLogoBackground } from "./NutoneLogoBackground";
 
 const logoText = "/fix_nutone_logo-03.png";
-const appleBg =
-  "https://images.unsplash.com/photo-1579613832125-5d34a13ffe2a?w=1200&q=80";
 
 /* ─── GSAP Split text (chars for stagger) ─── */
 function HeroSplitText({ text, className = "" }: { text: string; className?: string }) {
@@ -73,11 +71,6 @@ export function HeroSection() {
   const bottomBarRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion() ?? false;
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"],
-  });
-
   useGSAP(
     () => {
       const scope = contentRef.current;
@@ -129,18 +122,19 @@ export function HeroSection() {
     <section
       ref={sectionRef}
       id="hero"
-      className="relative min-h-screen flex flex-col justify-between overflow-hidden"
-      style={{ paddingTop: 72, background: "#020204" }}
+      className="relative min-h-screen min-h-[100dvh] flex flex-col justify-between overflow-x-hidden overflow-y-hidden"
+      style={{
+        paddingTop: "max(1.5rem, env(safe-area-inset-top))",
+        paddingBottom: "env(safe-area-inset-bottom)",
+        background: "#000000",
+      }}
     >
       <ShaderLinesBackground reducedMotion={reducedMotion} />
-      {/* Readability overlay */}
+      {/* Very subtle overlay so shader stays visible */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: [
-            "radial-gradient(ellipse 100% 50% at 45% 50%, rgba(2,2,4,0) 0%, rgba(2,2,4,0.5) 60%, rgba(2,2,4,0.9) 100%)",
-            "linear-gradient(180deg, rgba(2,2,4,0.5) 0%, transparent 20%, transparent 80%, rgba(2,2,4,0.6) 100%)",
-          ].join(", "),
+          background: "radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 100%)",
           zIndex: 0,
         }}
         aria-hidden
@@ -188,84 +182,185 @@ export function HeroSection() {
           }}
         />
       </div>
-      {/* 薄くデカいリンゴを背景に */}
+      {/* ニュートンのリンゴ: 落ちて弾む動き */}
       <div
-        className="pointer-events-none absolute inset-0 flex items-center justify-end"
+        className="pointer-events-none absolute inset-0 flex items-center justify-center"
         style={{ zIndex: 1 }}
         aria-hidden
       >
         <img
-          src={appleBg}
+          src={logoText}
           alt=""
-          className="max-w-none select-none object-contain object-right"
+          className="max-w-none select-none object-contain absolute"
           style={{
-            width: "clamp(480px, 95vw, 1400px)",
-            height: "clamp(480px, 95vh, 1000px)",
-            opacity: 0.06,
-            filter: "blur(40px)",
+            width: "clamp(280px, 45vw, 520px)",
+            height: "auto",
+            opacity: 0.08,
+            filter: "blur(24px)",
+            top: "18%",
+            left: "58%",
+            animation: reducedMotion ? "none" : "newton-apple-fall 8s ease-in-out infinite",
+          }}
+        />
+        <img
+          src={logoText}
+          alt=""
+          className="max-w-none select-none object-contain absolute"
+          style={{
+            width: "clamp(200px, 32vw, 380px)",
+            height: "auto",
+            opacity: 0.05,
+            filter: "blur(20px)",
+            top: "25%",
+            right: "20%",
+            animation: reducedMotion ? "none" : "newton-apple-fall 10s ease-in-out infinite",
+            animationDelay: "-3.5s",
           }}
         />
       </div>
 
       <div
         ref={contentRef}
-        className="max-w-[1080px] mx-auto px-6 md:px-12 w-full flex-1 flex flex-col justify-center relative hero-content"
+        className="flex-1 flex flex-col w-full min-h-0 hero-content overflow-x-hidden"
         style={{ zIndex: 10 }}
       >
-        <div className="hero-logo mb-6">
-          <img
-            src={logoText}
-            alt="nutone"
-            draggable={false}
-            style={{
-              width: "clamp(120px, 20vw, 200px)",
-              height: "auto",
-              objectFit: "contain",
-            }}
-          />
-        </div>
+        {/* 共通ラッパー: 見出しとサブコピーの left を完全に一致させる */}
+        <div className="flex-1 min-h-0 flex flex-col max-w-[1080px] mx-auto w-full px-4 sm:px-6 md:px-8">
+          <div className="flex-1 min-h-0 relative flex flex-col justify-end">
+            <div
+              className="hero-logo absolute inset-0 flex items-center justify-center pointer-events-none"
+              style={{ zIndex: 0 }}
+              aria-hidden
+            >
+              <img
+                src={logoText}
+                alt=""
+                draggable={false}
+                className="max-w-none select-none"
+                style={{
+                  width: "clamp(280px, 65vw, 900px)",
+                  height: "auto",
+                  maxHeight: "85vh",
+                  objectFit: "contain",
+                  opacity: 0.07,
+                  filter: "blur(32px)",
+                }}
+              />
+            </div>
 
-        <div className="hero-separator mb-12">
+            <motion.div
+              className="relative left-0 right-0 pointer-events-none pb-2 sm:pb-8"
+              style={{
+                fontFamily: "'Inter Tight', 'Helvetica Now Display', 'Suisse Int\\'l', sans-serif",
+                letterSpacing: "-0.03em",
+                lineHeight: 0.9,
+                fontWeight: 700,
+              }}
+            >
+              <div className="relative" style={{ minHeight: "clamp(5rem, 14vw, 9rem)" }}>
+                {/* Layer C: ghost behind */}
+              <h1
+                className="hero-line1 hero-line2 absolute left-0 right-0 bottom-0 w-full origin-bottom-left"
+                aria-hidden
+                style={{
+                  color: "rgba(255,255,255,0.03)",
+                  filter: "blur(0.5px)",
+                  transform: "translate(1px, 1px)",
+                  zIndex: 0,
+                }}
+              >
+                <span className="hero-line1 block" style={{ fontSize: "clamp(2.75rem, 14vw, 280px)" }}>
+                  <HeroSplitText text="EXPLOSIONS," />
+                </span>
+                <span className="hero-line2 block -mt-[0.15em]" style={{ fontSize: "clamp(1.875rem, 9vw, 160px)" }}>
+                  <HeroSplitText text="MADE STANDARD." />
+                </span>
+              </h1>
+              {/* Layer B: thick blur */}
+              <h1
+                className="hero-line1 hero-line2 absolute left-0 right-0 bottom-0 w-full origin-bottom-left"
+                aria-hidden
+                style={{
+                  color: "rgba(255,255,255,0.06)",
+                  filter: "blur(1px)",
+                  transform: "translate(0.5px, 0.5px)",
+                  zIndex: 1,
+                }}
+              >
+                <span className="hero-line1 block" style={{ fontSize: "clamp(2.75rem, 14vw, 280px)" }}>
+                  <HeroSplitText text="EXPLOSIONS," />
+                </span>
+                <span className="hero-line2 block -mt-[0.15em]" style={{ fontSize: "clamp(1.875rem, 9vw, 160px)" }}>
+                  <HeroSplitText text="MADE STANDARD." />
+                </span>
+              </h1>
+              {/* Layer A: primary stroke */}
+              <h1
+                className="hero-line1 hero-line2 absolute left-0 right-0 bottom-0 w-full origin-bottom-left text-[var(--text-strong)]"
+                style={{
+                  color: "transparent",
+                  WebkitTextStroke: "1px rgba(255,255,255,0.9)",
+                  zIndex: 2,
+                }}
+              >
+                <span className="hero-line1 block" style={{ fontSize: "clamp(2.75rem, 14vw, 280px)" }}>
+                  <HeroSplitText text="EXPLOSIONS," />
+                </span>
+                <span className="hero-line2 block -mt-[0.15em]" style={{ fontSize: "clamp(1.875rem, 9vw, 160px)" }}>
+                  <HeroSplitText text="MADE STANDARD." />
+                </span>
+              </h1>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* サブコピー: 同じラッパー内なので left が揃う */}
           <div
-            className="hero-separator-line h-px bg-[var(--line-soft)] origin-left"
-            style={{ width: 40 }}
-          />
-        </div>
-
-        <h1 className="text-[var(--text-strong)]">
-          <span className="hero-line1 block" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(2.5rem, 7.5vw, 6.5rem)", fontWeight: 800, lineHeight: 0.95, letterSpacing: "-0.04em" }}>
-            <HeroSplitText text="EXPLOSIONS," />
-          </span>
-          <span className="hero-line2 block mt-1" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(2.5rem, 7.5vw, 6.5rem)", fontWeight: 800, lineHeight: 0.95, letterSpacing: "-0.04em", WebkitTextStroke: "1.5px var(--stroke)", WebkitTextFillColor: "transparent" }}>
-            <HeroSplitText text="MADE STANDARD." />
-          </span>
-        </h1>
-
-        <div className="mt-12 md:mt-16 max-w-lg">
-          <div className="hero-sub-line h-px bg-[var(--line-soft)] mb-5" style={{ width: 24 }} />
-          <p
-            className="hero-sub-copy text-[var(--text-subtle)]"
-            style={{ fontSize: "0.875rem", lineHeight: 2.2, letterSpacing: "0.04em", fontWeight: 300 }}
+            className="shrink-0 w-full pt-0 pb-6 sm:pb-8 md:pb-10 -mt-1 sm:mt-0"
+            style={{ paddingBottom: "max(1.5rem, env(safe-area-inset-bottom))" }}
           >
-            表現が本来持っている、世界を動かす力を信じて。
-            <br className="hidden md:block" />
-            私たちは、新時代のスタンダードを探求し続けます。
-          </p>
+            <div className="hero-separator mb-6 sm:mb-8">
+              <div
+                className="hero-separator-line h-px bg-[var(--line-soft)] origin-left"
+                style={{ width: 40 }}
+              />
+            </div>
+            <div className="hero-sub-line h-px bg-[var(--line-soft)] mb-5" style={{ width: 24 }} />
+            <p
+              className="hero-sub-copy text-[var(--text-primary)]"
+              style={{
+                fontFamily: "var(--font-display-italic)",
+                fontSize: "clamp(0.9375rem, 2.5vw, 1.75rem)",
+                lineHeight: 2,
+                letterSpacing: "0.05em",
+                fontWeight: 500,
+                fontStyle: "italic",
+              }}
+            >
+              表現が本来持っている、世界を動かす力を信じて。
+              <br className="hidden md:block" />
+              私たちは、新時代のスタンダードを探求し続けます。
+            </p>
+          </div>
         </div>
       </div>
 
-      <div ref={bottomBarRef} className="hero-bottom-bar relative border-t border-[var(--line-soft)]" style={{ zIndex: 10 }}>
-        <div className="max-w-[1080px] mx-auto px-6 md:px-12 py-5 flex items-center justify-between">
-          <div className="hero-stats flex items-center gap-8 md:gap-12">
+      <div
+        ref={bottomBarRef}
+        className="hero-bottom-bar relative shrink-0"
+        style={{ zIndex: 10, paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
+      >
+        <div className="max-w-[1080px] mx-auto px-4 sm:px-6 md:px-12 py-4 md:py-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="hero-stats flex items-center gap-4 sm:gap-8 md:gap-12 flex-wrap">
             {[
               { target: 100, suffix: "+", label: "Songs / Year", d: 2.5 },
               { target: 300, suffix: "+", label: "Artists", d: 2.7 },
             ].map((stat, i) => (
               <div key={stat.label} className="flex items-center gap-2">
-                {i > 0 && <div className="w-px h-4 bg-[var(--line-soft)] mr-6 md:mr-10" />}
+                {i > 0 && <div className="w-px h-4 bg-[var(--line-soft)] mr-4 md:mr-10" />}
                 <span
                   className="text-[var(--text-strong)]"
-                  style={{ fontFamily: "var(--font-body)", fontSize: "1.25rem", fontWeight: 600, letterSpacing: "-0.02em" }}
+                  style={{ fontFamily: "var(--font-body)", fontSize: "clamp(1rem, 4vw, 1.25rem)", fontWeight: 600, letterSpacing: "-0.02em" }}
                 >
                   <AnimatedCounter target={stat.target} suffix={stat.suffix} delay={stat.d} />
                 </span>
@@ -282,7 +377,7 @@ export function HeroSection() {
           <button
             type="button"
             onClick={scrollDown}
-            className="hero-scroll-btn flex items-center gap-3 cursor-pointer group"
+            className="hero-scroll-btn flex items-center gap-3 cursor-pointer group min-h-[44px] min-w-[44px] touch-manipulation"
           >
             <span
               className="text-[var(--text-secondary)] group-hover:text-[var(--text-subtle)] transition-colors duration-300"

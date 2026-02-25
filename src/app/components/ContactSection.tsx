@@ -2,11 +2,13 @@ import { motion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import { NoiseOverlay, RevealLine, SectionWaveTop, WaveformBg } from "./IndustrialOverlay";
 import { NutoneLogoBackground } from "./NutoneLogoBackground";
+import { ThinLargeLogoBackground } from "./ThinLargeLogoBackground";
 
 export function ContactSection() {
   return (
-    <section id="contact" className="bg-[var(--surface)] relative overflow-hidden" style={{ padding: "120px 0", borderTop: "var(--section-divider)" }}>
+    <section id="contact" className="bg-[var(--surface)] relative overflow-hidden py-16 md:py-[7.5rem]" style={{ borderTop: "var(--section-divider)" }}>
       <NutoneLogoBackground />
+      <ThinLargeLogoBackground />
       <SectionWaveTop />
       <WaveformBg />
       <NoiseOverlay />

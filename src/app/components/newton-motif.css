@@ -1,0 +1,4 @@
+/* Newton motif: decorative layer only; transforms are applied by GSAP */
+.newton-motif {
+  contain: layout style;
+}

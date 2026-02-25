@@ -61,26 +61,35 @@ export function Header() {
   } as const;
 
   return (
-    <header ref={headerRef} className="fixed top-0 left-0 right-0 z-50 bg-[var(--surface)]/95 backdrop-blur-md">
-      <div className="absolute bottom-0 left-0 right-0 h-px" style={{ background: "var(--section-divider)" }} />
-
-      <div className="max-w-[1080px] mx-auto px-6 md:px-12 h-[72px] flex items-center justify-between">
+    <div
+      className="fixed left-4 right-4 md:left-6 md:right-6 lg:left-8 lg:right-8 z-50"
+      style={{ top: "calc(1rem + env(safe-area-inset-top))" }}
+    >
+      <header
+        ref={headerRef}
+        className="max-w-[1080px] mx-auto rounded-2xl border border-white/[0.12] backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.25)]"
+        style={{
+          background: "linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(228,234,242,0.08) 100%)",
+        }}
+      >
+        <div className="px-4 sm:px-6 md:px-8 h-[60px] md:h-[64px] flex items-center justify-between">
         <Link to="/" className="flex items-center">
           <img
             src={logoIcon}
             alt="nutone"
             draggable={false}
-            style={{ height: 36, width: "auto", objectFit: "contain" }}
+            className="h-8 md:h-9 w-auto object-contain opacity-95"
+            style={{ objectFit: "contain" }}
           />
         </Link>
 
-        <nav ref={navRef} className="hidden md:flex items-center gap-10">
+        <nav ref={navRef} className="hidden md:flex items-center gap-8 lg:gap-10">
           {navItems.map((item) =>
             item.type === "scroll" ? (
               <button
                 key={item.label}
                 onClick={() => handleScrollNav(item.href)}
-                className="text-[var(--text-secondary)] hover:text-[var(--text-strong)] transition-colors duration-300 cursor-pointer"
+                className="text-white/70 hover:text-white transition-colors duration-300 cursor-pointer"
                 style={linkStyle}
               >
                 {item.label}
@@ -89,7 +98,7 @@ export function Header() {
               <button
                 key={item.label}
                 onClick={() => handleLinkNav(item.to)}
-                className="text-[var(--text-secondary)] hover:text-[var(--text-strong)] transition-colors duration-300 cursor-pointer"
+                className="text-white/70 hover:text-white transition-colors duration-300 cursor-pointer"
                 style={linkStyle}
               >
                 {item.label}
@@ -100,30 +109,36 @@ export function Header() {
 
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden text-[var(--text-secondary)] cursor-pointer"
+          className="md:hidden text-white/70 hover:text-white cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center -mr-2 touch-manipulation transition-colors duration-300"
+          aria-label={isOpen ? "メニューを閉じる" : "メニューを開く"}
         >
           {isOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
-      </div>
+        </div>
 
       {isOpen && (
-        <div className="md:hidden bg-[var(--panel)]/95 backdrop-blur-md border-t border-[var(--line-soft)]">
-          <nav className="flex flex-col px-6 py-8 gap-6">
+        <div
+          className="md:hidden rounded-b-2xl border-t border-white/[0.12] backdrop-blur-xl"
+          style={{
+            background: "linear-gradient(180deg, rgba(255,255,255,0.1) 0%, rgba(228,234,242,0.06) 100%)",
+          }}
+        >
+          <nav className="flex flex-col px-6 py-6 gap-1">
             {navItems.map((item) =>
-              item.type === "scroll" ? (
-                <button
-                  key={item.label}
-                  onClick={() => handleScrollNav(item.href)}
-                  className="text-[var(--text-secondary)] hover:text-[var(--text-strong)] transition-colors text-left cursor-pointer"
-                  style={{ ...linkStyle, fontSize: "0.875rem" }}
-                >
-                  {item.label}
-                </button>
+            item.type === "scroll" ? (
+              <button
+                key={item.label}
+                onClick={() => handleScrollNav(item.href)}
+                className="text-white/70 hover:text-white transition-colors text-left cursor-pointer py-3 rounded-lg hover:bg-white/5 -mx-2 px-2"
+                style={{ ...linkStyle, fontSize: "0.875rem" }}
+              >
+                {item.label}
+              </button>
               ) : (
                 <button
                   key={item.label}
                   onClick={() => handleLinkNav(item.to)}
-                  className="text-[var(--text-secondary)] hover:text-[var(--text-strong)] transition-colors text-left cursor-pointer"
+                  className="text-white/70 hover:text-white transition-colors text-left cursor-pointer py-3 rounded-lg hover:bg-white/5 -mx-2 px-2"
                   style={{ ...linkStyle, fontSize: "0.875rem" }}
                 >
                   {item.label}
@@ -133,6 +148,7 @@ export function Header() {
           </nav>
         </div>
       )}
-    </header>
+      </header>
+    </div>
   );
 }

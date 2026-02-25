@@ -71,6 +71,7 @@
   --headline-spacing: -0.02em;
 
   --font-display: 'Kanit', sans-serif;
+  --font-display-italic: 'Playfair Display', serif;
   --font-body: 'Work Sans', sans-serif;
   --font-mono: 'IBM Plex Mono', monospace;
 }
@@ -172,6 +173,10 @@
     font-family: var(--font-body);
   }
 
+  body {
+    overflow-x: hidden;
+  }
+
   h1 {
     font-family: var(--font-display);
     font-size: var(--text-2xl);
@@ -215,4 +220,24 @@
     font-weight: var(--font-weight-normal);
     line-height: 1.5;
   }
+}
+
+@keyframes footer-logo-band-right {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes footer-logo-band-left {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+/* ニュートンのリンゴ: 落ちて弾む（重力→着地→軽く弾む） */
+@keyframes newton-apple-fall {
+  0% { transform: translateY(-40%) scale(1); }
+  50% { transform: translateY(48%) scale(1.03); }
+  58% { transform: translateY(45%) scale(0.97); }
+  66% { transform: translateY(49%) scale(1.01); }
+  72% { transform: translateY(48%) scale(1); }
+  100% { transform: translateY(-40%) scale(1); }
 }

@@ -53,9 +53,9 @@ export function PortfolioGrid({ items, indexOffset = 0 }: PortfolioGridProps) {
               >
                 {String(indexOffset + index + 1).padStart(3, "0")}
               </span>
-              <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-colors duration-300">
-                <div className="w-11 h-11 rounded-full bg-[var(--text-strong)]/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 scale-90 group-hover:scale-100">
-                  <Play size={15} className="text-[var(--void)] ml-0.5" fill="var(--void)" />
+              <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 sm:bg-black/0 transition-colors duration-300">
+                <div className="w-12 h-12 sm:w-11 sm:h-11 rounded-full bg-[var(--text-strong)]/90 flex items-center justify-center opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-300 scale-100 sm:scale-90 sm:group-hover:scale-100">
+                  <Play size={18} className="text-[var(--void)] ml-0.5" fill="var(--void)" />
                 </div>
               </div>
             </div>

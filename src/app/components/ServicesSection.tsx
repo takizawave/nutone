@@ -2,8 +2,11 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ArrowRight } from "lucide-react";
-import { NoiseOverlay, RevealLine, SectionWaveTop, WaveformBg } from "./IndustrialOverlay";
+import { AppleMotif } from "./AppleMotif";
+import { NoiseOverlay, RevealLine, SectionWaveTop, TVStaticOverlay, WaveformBg } from "./IndustrialOverlay";
+import { NewtonMotif } from "./NewtonMotif";
 import { NutoneLogoBackground } from "./NutoneLogoBackground";
+import { ThinLargeLogoBackground } from "./ThinLargeLogoBackground";
 
 const services = [
   {
@@ -42,11 +45,27 @@ export function ServicesSection() {
   );
 
   return (
-    <section id="service" ref={sectionRef} className="bg-[var(--panel)] relative overflow-hidden" style={{ padding: "120px 0", borderTop: "var(--section-divider)" }}>
+    <section id="service" ref={sectionRef} className="bg-[var(--panel)] relative overflow-hidden py-16 md:py-[7.5rem]" style={{ borderTop: "var(--section-divider)" }}>
       <NutoneLogoBackground />
+      <ThinLargeLogoBackground />
       <SectionWaveTop />
       <WaveformBg />
       <NoiseOverlay />
+      <TVStaticOverlay opacity={0.06} />
+
+      {/* Newton apple: 吊られて揺れて → たまに落ちてバウンド */}
+      <NewtonMotif
+        Motif={AppleMotif}
+        seed={20}
+        style={{
+          bottom: "14%",
+          left: "5%",
+          width: 44,
+          height: 53,
+          color: "rgba(255,255,255,0.07)",
+          zIndex: 4,
+        }}
+      />
 
       <div className="max-w-[1080px] mx-auto px-6 md:px-12 relative" style={{ zIndex: 5 }}>
         <p
