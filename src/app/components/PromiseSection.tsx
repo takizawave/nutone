@@ -4,6 +4,7 @@ import gsap from "gsap";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
 import { NoiseOverlay, RevealLine, SectionWaveTop, WaveformBg } from "./IndustrialOverlay";
+import { NutoneLogoBackground } from "./NutoneLogoBackground";
 
 export function PromiseSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -26,6 +27,7 @@ export function PromiseSection() {
 
   return (
     <section ref={sectionRef} className="bg-[var(--surface)] relative overflow-hidden" style={{ padding: "120px 0", borderTop: "var(--section-divider)" }}>
+      <NutoneLogoBackground />
       <SectionWaveTop />
       <WaveformBg />
       <NoiseOverlay />

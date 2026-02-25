@@ -2,9 +2,12 @@ import { useRef, useState, useEffect } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { motion, useScroll, useReducedMotion } from "motion/react";
-import { DAWStyleBackground } from "./DAWStyleBackground";
+import { ShaderLinesBackground } from "./ShaderLinesBackground";
+import { NutoneLogoBackground } from "./NutoneLogoBackground";
 
 const logoText = "/fix_nutone_logo-03.png";
+const appleBg =
+  "https://images.unsplash.com/photo-1579613832125-5d34a13ffe2a?w=1200&q=80";
 
 /* ─── GSAP Split text (chars for stagger) ─── */
 function HeroSplitText({ text, className = "" }: { text: string; className?: string }) {
@@ -129,29 +132,79 @@ export function HeroSection() {
       ref={sectionRef}
       id="hero"
       className="relative min-h-screen flex flex-col justify-between overflow-hidden"
-      style={{ paddingTop: 72, background: "#050505" }}
+      style={{ paddingTop: 72, background: "#020204" }}
     >
-      <DAWStyleBackground
-        meterCount={32}
-        gridLineInterval={48}
-        opacity={0.5}
-        reducedMotion={reducedMotion}
-      />
-      {/* 薄いロゴを背景に */}
+      <ShaderLinesBackground reducedMotion={reducedMotion} />
+      {/* Readability overlay */}
       <div
-        className="pointer-events-none absolute inset-0 flex items-center justify-center"
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: [
+            "radial-gradient(ellipse 100% 50% at 45% 50%, rgba(2,2,4,0) 0%, rgba(2,2,4,0.5) 60%, rgba(2,2,4,0.9) 100%)",
+            "linear-gradient(180deg, rgba(2,2,4,0.5) 0%, transparent 20%, transparent 80%, rgba(2,2,4,0.6) 100%)",
+          ].join(", "),
+          zIndex: 0,
+        }}
+        aria-hidden
+      />
+      {/* Noise grain */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.04]"
+        style={{
+          zIndex: 0,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`,
+          backgroundSize: "128px 128px",
+          mixBlendMode: "overlay",
+        }}
+        aria-hidden
+      />
+      <NutoneLogoBackground />
+      {/* 下あたりにメッチャでかいロゴ背景 x2 */}
+      <div
+        className="pointer-events-none absolute inset-0 flex items-end justify-between"
         style={{ zIndex: 1 }}
         aria-hidden
       >
         <img
           src={logoText}
           alt=""
-          className="max-w-none select-none"
+          className="max-w-none select-none object-contain object-left-bottom"
           style={{
-            width: "clamp(320px, 70vw, 680px)",
+            width: "clamp(700px, 95vw, 1600px)",
             height: "auto",
+            maxHeight: "85vh",
             opacity: 0.045,
-            filter: "blur(72px)",
+            filter: "blur(48px)",
+          }}
+        />
+        <img
+          src={logoText}
+          alt=""
+          className="max-w-none select-none object-contain object-right-bottom"
+          style={{
+            width: "clamp(700px, 95vw, 1600px)",
+            height: "auto",
+            maxHeight: "85vh",
+            opacity: 0.045,
+            filter: "blur(48px)",
+          }}
+        />
+      </div>
+      {/* 薄くデカいリンゴを背景に */}
+      <div
+        className="pointer-events-none absolute inset-0 flex items-center justify-end"
+        style={{ zIndex: 1 }}
+        aria-hidden
+      >
+        <img
+          src={appleBg}
+          alt=""
+          className="max-w-none select-none object-contain object-right"
+          style={{
+            width: "clamp(480px, 95vw, 1400px)",
+            height: "clamp(480px, 95vh, 1000px)",
+            opacity: 0.06,
+            filter: "blur(40px)",
           }}
         />
       </div>

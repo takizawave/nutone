@@ -4,6 +4,7 @@ import gsap from "gsap";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
 import { NoiseOverlay, RevealLine, SectionWaveTop, WaveformBg } from "./IndustrialOverlay";
+import { NutoneLogoBackground } from "./NutoneLogoBackground";
 import { PortfolioGrid } from "./PortfolioGrid";
 import { portfolioItems } from "../data/portfolio";
 
@@ -33,6 +34,7 @@ export function PortfolioSection() {
 
   return (
     <section id="works" ref={sectionRef} className="bg-[var(--panel)] relative overflow-hidden" style={{ padding: "120px 0", borderTop: "var(--section-divider)" }}>
+      <NutoneLogoBackground />
       <SectionWaveTop />
       <WaveformBg />
       <NoiseOverlay />

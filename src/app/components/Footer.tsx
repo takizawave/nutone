@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import { useNavigate, useLocation } from "react-router";
 const logoText = "/fix_nutone_logo-03.png";
 import { RevealLine, SectionWaveTop } from "./IndustrialOverlay";
+import { NutoneLogoBackground } from "./NutoneLogoBackground";
 
 export function Footer() {
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ export function Footer() {
       className="bg-[var(--void)] relative overflow-hidden"
       style={{ padding: "80px 0 48px" }}
     >
+      <NutoneLogoBackground />
       <SectionWaveTop />
       <div className="absolute top-0 left-0 right-0 h-px w-full" style={{ background: "var(--section-divider)" }} />
 

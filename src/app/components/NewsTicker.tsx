@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { NutoneLogoBackground } from "./NutoneLogoBackground";
 
 const newsItems = [
   'シングル「Flames Within Me」リリースのお知らせ',
@@ -30,7 +31,8 @@ export function NewsTicker() {
   const allItems = [...newsItems, ...newsItems];
 
   return (
-    <section className="bg-[var(--panel)] py-5 overflow-hidden border-y border-[var(--line-soft)]">
+    <section className="bg-[var(--panel)] py-5 overflow-hidden border-y border-[var(--line-soft)] relative">
+      <NutoneLogoBackground />
       <div
         ref={scrollRef}
         className="flex items-center gap-16 whitespace-nowrap w-max"

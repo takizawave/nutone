@@ -3,6 +3,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ArrowRight } from "lucide-react";
 import { NoiseOverlay, RevealLine, SectionWaveTop, WaveformBg } from "./IndustrialOverlay";
+import { NutoneLogoBackground } from "./NutoneLogoBackground";
 
 const services = [
   {
@@ -42,6 +43,7 @@ export function ServicesSection() {
 
   return (
     <section id="service" ref={sectionRef} className="bg-[var(--panel)] relative overflow-hidden" style={{ padding: "120px 0", borderTop: "var(--section-divider)" }}>
+      <NutoneLogoBackground />
       <SectionWaveTop />
       <WaveformBg />
       <NoiseOverlay />

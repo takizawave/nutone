@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { NoiseOverlay, RevealLine, SectionWaveTop, WaveformBg } from "./IndustrialOverlay";
+import { NutoneLogoBackground } from "./NutoneLogoBackground";
 
 const companyInfo = [
   { label: "会社名", value: "nutone株式会社" },
@@ -13,6 +14,7 @@ const companyInfo = [
 export function CompanySection() {
   return (
     <section id="company" className="bg-[var(--surface)] relative overflow-hidden" style={{ padding: "120px 0", borderTop: "var(--section-divider)" }}>
+      <NutoneLogoBackground />
       <SectionWaveTop />
       <WaveformBg />
       <NoiseOverlay />
