@@ -8,7 +8,7 @@ import {
   useMotionValue,
   useSpring,
 } from "motion/react";
-const logoText = "/fix_nutone_logo-04.png";
+const logoText = "/fix_nutone_logo-03.png";
 
 /* ─── Particle Network ─── */
 function ParticleCanvas() {

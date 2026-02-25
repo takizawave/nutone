@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { useNavigate, useLocation } from "react-router";
-const logoText = "/fix_nutone_logo-04.png";
+const logoText = "/fix_nutone_logo-03.png";
 import { RevealLine } from "./IndustrialOverlay";
 
 export function Footer() {

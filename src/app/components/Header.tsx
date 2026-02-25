@@ -3,7 +3,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { Menu, X } from "lucide-react";
 import { useNavigate, useLocation, Link } from "react-router";
-const logoIcon = "/fix_nutone_logo-03.png";
+const logoIcon = "/nutone_logotype@2x.png";
 
 type NavItem =
   | { label: string; href: string; type: "scroll" }
