@@ -7,8 +7,152 @@ import {
   useTransform,
   useMotionValue,
   useSpring,
+  useReducedMotion,
 } from "motion/react";
 const logoText = "/fix_nutone_logo-03.png";
+
+/* ─── Framer-style hero background: gradient blobs + logo layer ─── */
+function HeroBackground({
+  scrollProgress,
+  reducedMotion,
+}: {
+  scrollProgress: ReturnType<typeof useScroll>["scrollYProgress"];
+  reducedMotion: boolean;
+}) {
+  const blob1X = useTransform(scrollProgress, [0, 0.5], [0, reducedMotion ? 0 : 30]);
+  const blob1Y = useTransform(scrollProgress, [0, 0.5], [0, reducedMotion ? 0 : -20]);
+  const blob1Op = useTransform(scrollProgress, [0, 0.4], [0.5, reducedMotion ? 0.5 : 0.12]);
+  const blob2X = useTransform(scrollProgress, [0, 0.5], [0, reducedMotion ? 0 : -25]);
+  const blob2Y = useTransform(scrollProgress, [0, 0.5], [0, reducedMotion ? 0 : 15]);
+  const blob2Op = useTransform(scrollProgress, [0, 0.35], [0.35, reducedMotion ? 0.35 : 0.08]);
+  const logoScale = useTransform(scrollProgress, [0, 0.5], [1, reducedMotion ? 1 : 1.4]);
+  const logoOp = useTransform(scrollProgress, [0, 0.4], [0.06, reducedMotion ? 0.06 : 0.02]);
+
+  return (
+    <>
+      {/* Soft gradient orbs (Framer template–style) */}
+      <motion.div
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+        style={{ zIndex: 0 }}
+        aria-hidden
+      >
+        <motion.div
+          className="absolute rounded-full"
+          style={{
+            width: "min(90vw, 720px)",
+            height: "min(90vw, 720px)",
+            left: "10%",
+            top: "20%",
+            background: "radial-gradient(circle, rgba(255,255,255,0.07) 0%, transparent 70%)",
+            x: blob1X,
+            y: blob1Y,
+            opacity: blob1Op,
+          }}
+        />
+        <motion.div
+          className="absolute rounded-full"
+          style={{
+            width: "min(80vw, 560px)",
+            height: "min(80vw, 560px)",
+            right: "5%",
+            bottom: "15%",
+            background: "radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%)",
+            x: blob2X,
+            y: blob2Y,
+            opacity: blob2Op,
+          }}
+        />
+      </motion.div>
+      {/* Large blurred logo in background */}
+      <motion.div
+        className="pointer-events-none absolute inset-0 flex items-center justify-center"
+        style={{ zIndex: 0 }}
+        aria-hidden
+      >
+        <motion.img
+          src={logoText}
+          alt=""
+          className="max-w-none select-none"
+          style={{
+            width: "clamp(320px, 70vw, 680px)",
+            height: "auto",
+            opacity: logoOp,
+            scale: logoScale,
+            filter: "blur(64px)",
+          }}
+        />
+      </motion.div>
+    </>
+  );
+}
+
+/* ─── Waveform ribbon (canvas, scroll-driven amplitude) ─── */
+const RIBBON_RECTS = 100;
+
+function HeroWaveRibbon({
+  scrollProgress,
+  reducedMotion,
+}: {
+  scrollProgress: ReturnType<typeof useScroll>["scrollYProgress"];
+  reducedMotion: boolean;
+}) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const ribbonOpacity = useTransform(scrollProgress, [0, 0.2], [0.12, 0.45]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let progress = 0;
+    const unsub = scrollProgress.on("change", (v) => (progress = v));
+    let rafId = 0;
+
+    const draw = () => {
+      const w = canvas.width;
+      const h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+      const amp = reducedMotion ? 0 : 4 + progress * 18;
+      const freq = 0.018 + progress * 0.03;
+      for (let i = 0; i < RIBBON_RECTS; i++) {
+        const x = (i / RIBBON_RECTS) * w;
+        const rectW = w / RIBBON_RECTS - 0.5;
+        const yOff = amp * Math.sin(freq * i * 8);
+        const y = h / 2 + yOff;
+        const alpha = 0.4 * (0.7 + 0.3 * Math.sin(i * 0.12));
+        ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+        ctx.fillRect(x, y, Math.max(1, rectW), 1.5);
+      }
+      rafId = requestAnimationFrame(draw);
+    };
+    draw();
+    return () => {
+      unsub();
+      cancelAnimationFrame(rafId);
+    };
+  }, [scrollProgress, reducedMotion]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const dpr = Math.min(2, window.devicePixelRatio);
+    canvas.width = window.innerWidth * dpr;
+    canvas.height = 6 * dpr;
+    canvas.style.width = "100%";
+    canvas.style.height = "6px";
+  }, []);
+
+  return (
+    <motion.div
+      className="pointer-events-none absolute left-0 right-0 top-[58%] h-[6px] w-full"
+      style={{ zIndex: 1, opacity: ribbonOpacity }}
+      aria-hidden
+    >
+      <canvas ref={canvasRef} className="h-full w-full" />
+    </motion.div>
+  );
+}
 
 /* ─── Particle Network ─── */
 function ParticleCanvas() {
@@ -294,6 +438,7 @@ export function HeroSection() {
   const mouseY = useMotionValue(0);
   const mx = useSpring(mouseX, { stiffness: 25, damping: 20 });
   const my = useSpring(mouseY, { stiffness: 25, damping: 20 });
+  const reducedMotion = useReducedMotion() ?? false;
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -307,10 +452,8 @@ export function HeroSection() {
 
       const logo = scope.querySelector(".hero-logo");
       const separatorLine = scope.querySelector(".hero-separator-line");
-      const separatorLabel = scope.querySelector(".hero-separator-label");
       const line1Chars = scope.querySelectorAll(".hero-line1 .hero-headline-char");
       const line2Chars = scope.querySelectorAll(".hero-line2 .hero-headline-char");
-      const line3Chars = scope.querySelectorAll(".hero-line3 .hero-headline-char");
       const subLine = scope.querySelector(".hero-sub-line");
       const subCopy = scope.querySelector(".hero-sub-copy");
       const bottomBar = scope.querySelector(".hero-bottom-bar");
@@ -321,10 +464,8 @@ export function HeroSection() {
 
       tl.from(logo, { y: 12, opacity: 0, duration: 0.8 })
         .from(separatorLine, { scaleX: 0, duration: 1.2, ease: "power2.inOut" }, 0.4)
-        .from(separatorLabel, { opacity: 0, duration: 0.8 }, 1)
         .from(line1Chars, { yPercent: 110, opacity: 0, duration: 0.7, stagger: 0.025 }, 0.6)
-        .from(line2Chars, { yPercent: 110, opacity: 0, duration: 0.7, stagger: 0.025 }, 0.82)
-        .from(line3Chars, { yPercent: 110, opacity: 0, duration: 0.9 }, 1.2)
+        .from(line2Chars, { yPercent: 110, opacity: 0, duration: 0.9 }, 0.9)
         .from(subLine, { width: 0, duration: 0.8 }, 1.8)
         .from(subCopy, { y: 10, opacity: 0, duration: 0.7 }, 2)
         .from(bottomBar, { opacity: 0 }, 2.4)
@@ -391,6 +532,8 @@ export function HeroSection() {
       className="relative min-h-screen flex flex-col justify-between bg-[var(--void)] overflow-hidden"
       style={{ paddingTop: 72 }}
     >
+      <HeroBackground scrollProgress={scrollYProgress} reducedMotion={reducedMotion} />
+      <HeroWaveRibbon scrollProgress={scrollYProgress} reducedMotion={reducedMotion} />
       <ParticleCanvas />
       <OrbitalDiagram mx={mx} my={my} scrollProgress={scrollYProgress} />
 
@@ -412,34 +555,19 @@ export function HeroSection() {
           />
         </div>
 
-        <div className="hero-separator mb-12 flex items-center gap-4">
+        <div className="hero-separator mb-12">
           <div
             className="hero-separator-line h-px bg-[var(--line-soft)] origin-left"
             style={{ width: 40 }}
           />
-          <span
-            className="hero-separator-label"
-            style={{
-              fontFamily: "var(--font-body)",
-              fontSize: "var(--section-label-size)",
-              letterSpacing: "var(--section-label-spacing)",
-              color: "var(--text-secondary)",
-              opacity: 0.5,
-            }}
-          >
-            001
-          </span>
         </div>
 
         <h1 className="text-[var(--text-strong)]">
           <span className="hero-line1 block" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(2.5rem, 7.5vw, 6.5rem)", fontWeight: 800, lineHeight: 0.95, letterSpacing: "-0.04em" }}>
-            <HeroSplitText text="CREATING" />
+            <HeroSplitText text="EXPLOSIONS," />
           </span>
-          <span className="hero-line2 block mt-1" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(2.5rem, 7.5vw, 6.5rem)", fontWeight: 800, lineHeight: 0.95, letterSpacing: "-0.04em" }}>
-            <HeroSplitText text="THE GREATEST" />
-          </span>
-          <span className="hero-line3 block mt-1" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(2.5rem, 7.5vw, 6.5rem)", fontWeight: 800, lineHeight: 0.95, letterSpacing: "-0.04em", WebkitTextStroke: "1.5px var(--stroke)", WebkitTextFillColor: "transparent" }}>
-            <HeroSplitText text="SCENES." />
+          <span className="hero-line2 block mt-1" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(2.5rem, 7.5vw, 6.5rem)", fontWeight: 800, lineHeight: 0.95, letterSpacing: "-0.04em", WebkitTextStroke: "1.5px var(--stroke)", WebkitTextFillColor: "transparent" }}>
+            <HeroSplitText text="MADE STANDARD." />
           </span>
         </h1>
 
