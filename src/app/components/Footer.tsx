@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { useNavigate, useLocation } from "react-router";
 const logoText = "/fix_nutone_logo-03.png";
-import { RevealLine } from "./IndustrialOverlay";
+import { RevealLine, SectionWaveTop } from "./IndustrialOverlay";
 
 export function Footer() {
   const navigate = useNavigate();
@@ -33,6 +33,7 @@ export function Footer() {
       className="bg-[var(--void)] relative overflow-hidden"
       style={{ padding: "80px 0 48px" }}
     >
+      <SectionWaveTop />
       <div className="absolute top-0 left-0 right-0 h-px w-full" style={{ background: "var(--section-divider)" }} />
 
       <div className="max-w-[1080px] mx-auto px-6 md:px-12">

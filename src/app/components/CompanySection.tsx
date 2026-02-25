@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { NoiseOverlay, RevealLine } from "./IndustrialOverlay";
+import { NoiseOverlay, RevealLine, SectionWaveTop, WaveformBg } from "./IndustrialOverlay";
 
 const companyInfo = [
   { label: "会社名", value: "nutone株式会社" },
@@ -13,6 +13,8 @@ const companyInfo = [
 export function CompanySection() {
   return (
     <section id="company" className="bg-[var(--surface)] relative overflow-hidden" style={{ padding: "120px 0", borderTop: "var(--section-divider)" }}>
+      <SectionWaveTop />
+      <WaveformBg />
       <NoiseOverlay />
 
       <div className="max-w-[1080px] mx-auto px-6 md:px-12 relative" style={{ zIndex: 5 }}>

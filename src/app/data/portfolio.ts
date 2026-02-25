@@ -6,6 +6,7 @@ export interface PortfolioItem {
 }
 
 export const portfolioItems: PortfolioItem[] = [
+  { title: "CyberAgent Legit journey to the FUTURE | Semi-Finals | BGT 2024", youtubeId: "0JMUHp6SvNw", youtubeUrl: "https://www.youtube.com/watch?v=0JMUHp6SvNw&t=107s", recordUrl: "https://www.youtube.com/watch?v=0JMUHp6SvNw" },
   { title: '"wonderland"〜Phase Transition Festival 2025〜', youtubeId: "bZ7FN62PAvA", youtubeUrl: "https://www.youtube.com/watch?v=bZ7FN62PAvA", recordUrl: "https://jazz2-0.co.jp/clients/wonderland" },
   { title: "晋平太 NEWYOKU", youtubeId: "IYFZZQD3hKo", youtubeUrl: "https://www.youtube.com/watch?v=IYFZZQD3hKo", recordUrl: "https://jazz2-0.co.jp/clients/newyoku" },
   { title: 'YOKARO-MON「FAVORITE SONG」', youtubeId: "IYFZZQD3hKo", youtubeUrl: "https://www.youtube.com/watch?v=IYFZZQD3hKo", recordUrl: "https://jazz2-0.co.jp/clients/yokaro-mon" },

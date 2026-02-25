@@ -3,7 +3,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
-import { NoiseOverlay, RevealLine } from "./IndustrialOverlay";
+import { NoiseOverlay, RevealLine, SectionWaveTop, WaveformBg } from "./IndustrialOverlay";
 
 export function PromiseSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -25,7 +25,9 @@ export function PromiseSection() {
   );
 
   return (
-    <section ref={sectionRef} className="bg-[var(--surface)] relative overflow-hidden" style={{ padding: "120px 0" }}>
+    <section ref={sectionRef} className="bg-[var(--surface)] relative overflow-hidden" style={{ padding: "120px 0", borderTop: "var(--section-divider)" }}>
+      <SectionWaveTop />
+      <WaveformBg />
       <NoiseOverlay />
 
       <div className="max-w-[1080px] mx-auto px-6 md:px-12 relative" style={{ zIndex: 5 }}>

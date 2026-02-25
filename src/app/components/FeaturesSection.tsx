@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { NoiseOverlay, RevealLine } from "./IndustrialOverlay";
+import { NoiseOverlay, RevealLine, SectionWaveTop, WaveformBg } from "./IndustrialOverlay";
 
 const features = [
   {
@@ -46,6 +46,8 @@ export function FeaturesSection() {
 
   return (
     <section ref={sectionRef} className="bg-[var(--surface)] relative overflow-hidden" style={{ padding: "120px 0", borderTop: "var(--section-divider)" }}>
+      <SectionWaveTop />
+      <WaveformBg />
       <NoiseOverlay />
 
       <div className="max-w-[1080px] mx-auto px-6 md:px-12 relative" style={{ zIndex: 5 }}>

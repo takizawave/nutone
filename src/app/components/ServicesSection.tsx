@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ArrowRight } from "lucide-react";
-import { NoiseOverlay, RevealLine } from "./IndustrialOverlay";
+import { NoiseOverlay, RevealLine, SectionWaveTop, WaveformBg } from "./IndustrialOverlay";
 
 const services = [
   {
@@ -42,6 +42,8 @@ export function ServicesSection() {
 
   return (
     <section id="service" ref={sectionRef} className="bg-[var(--panel)] relative overflow-hidden" style={{ padding: "120px 0", borderTop: "var(--section-divider)" }}>
+      <SectionWaveTop />
+      <WaveformBg />
       <NoiseOverlay />
 
       <div className="max-w-[1080px] mx-auto px-6 md:px-12 relative" style={{ zIndex: 5 }}>
