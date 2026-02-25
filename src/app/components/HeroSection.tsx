@@ -83,7 +83,6 @@ export function HeroSection() {
       const scope = contentRef.current;
       if (!scope || !sectionRef.current) return;
 
-      const eyebrow = scope.querySelector(".hero-eyebrow");
       const logo = scope.querySelector(".hero-logo");
       const separatorLine = scope.querySelector(".hero-separator-line");
       const line1Chars = scope.querySelectorAll(".hero-line1 .hero-headline-char");
@@ -97,7 +96,6 @@ export function HeroSection() {
       const tl = gsap.timeline({ defaults: { ease: easeOut } });
 
       tl.from(logo, { y: 12, opacity: 0, duration: 0.8 })
-        .from(eyebrow, { y: 8, opacity: 0, duration: 0.5 }, 0.35)
         .from(separatorLine, { scaleX: 0, duration: 1.2, ease: "power2.inOut" }, 0.4)
         .from(line1Chars, { yPercent: 110, opacity: 0, duration: 0.7, stagger: 0.025 }, 0.6)
         .from(line2Chars, { yPercent: 110, opacity: 0, duration: 0.9 }, 0.9)
@@ -227,18 +225,6 @@ export function HeroSection() {
           />
         </div>
 
-        <p
-          className="hero-eyebrow text-[var(--text-secondary)] mb-4"
-          style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "0.6875rem",
-            letterSpacing: "0.2em",
-            textTransform: "uppercase",
-            fontWeight: 500,
-          }}
-        >
-          Sound. Standard.
-        </p>
         <div className="hero-separator mb-12">
           <div
             className="hero-separator-line h-px bg-[var(--line-soft)] origin-left"
